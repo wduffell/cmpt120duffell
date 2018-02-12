@@ -12,6 +12,9 @@ def main():
         sign = sign * -1
     print ("The approximated value of pi is:", pi)
 
+# JA: You also had to print the difference between the calculated pi
+# and 
+
 main()
 
 
