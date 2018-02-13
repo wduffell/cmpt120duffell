@@ -1,4 +1,4 @@
-# numbers2text.py
+# text2numbers.py
 
 def main():
     print("This program converts a textual message into a sequence")
