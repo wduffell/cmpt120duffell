@@ -15,6 +15,6 @@ def main():
         # append character to message
         message = message + chr(codeNum)
 
-    print("\tThe decoded message is:", message)
+    print("\nThe decoded message is:", message)
 
 main()
