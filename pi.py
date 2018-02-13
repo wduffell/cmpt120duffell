@@ -15,9 +15,6 @@ def main():
     print ("The approximated value of pi is:", pi)
     print ("The error of the estimate is", math.fabs (pi - math.pi))
 
-# JA: You also had to print the difference between the calculated pi
-# and 
-
 main()
 
 
