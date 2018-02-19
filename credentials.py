@@ -11,3 +11,7 @@ def main():
 
 # TODO modify this to generate a Marist-style username
     uname = first + last
+
+# ask user to create a new password
+    passwd = input("Create new password: ")
+
