@@ -16,7 +16,7 @@ def main():
     passwd = input("Create new password: ")
 
 # TODO modify this to ensure the password has at least 8 characters
-    while false:
+    while False:
         print ("Fool of a Took! That password is feeble!")
         passwd = input("Create new password: ")
         print("The force is strong with this one...")
