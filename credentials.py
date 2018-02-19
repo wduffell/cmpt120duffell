@@ -8,3 +8,6 @@ def main():
 # get user's first and last name
     first = input("Enter your first name: ")
     last = input("Enter your last name: ")
+
+# TODO modify this to generate a Marist-style username
+    uname = first + last
