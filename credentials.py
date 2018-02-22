@@ -10,17 +10,20 @@ def main():
     last = input("Enter your last name: ")
 
 # TODO modify this to generate a Marist-style username
-    uname = first + last
+    uname = first + "." + last
 
 # ask user to create a new password
-    passwd = input("Create new password: ")
+    passwd = input("Create new password (at least 8 characters long): ")
 
 # TODO modify this to ensure the password has at least 8 characters
-    while False:
-        print ("Fool of a Took! That password is feeble!")
-        passwd = input("Create new password: ")
+    return_val = True
+    if len(passwd) < 8:
+        print("Fool of a Took! That password is feeble!")
+        print ("The length of the password should be at least 8 characters long")
+        return_val = False
+        passwd = input("Create new password:")  
+    if len(passwd) >= 8:
         print("The force is strong with this one...")
         print ("Account configured. Your new email adress is", uname + "@marist.edu")
-    
-
+        return_val = True
 main()    
