@@ -1,4 +1,5 @@
 from graphics import *
+from calc_functions import *
 
 win = GraphWin('Calc', 320, 500)
 
