@@ -52,11 +52,12 @@ def main():
         print (clicked.getX(), clicked.getY())
         row, col = clickedButton(clicked)
         buttons[row][col].setFill('lightgreen')
-        displayString = (displayString + str(calcGrid[row][col])).rjust(150);
-        displayTextElement.undraw()
-        displayTextElement = Text(Point(0, 50), displayString)
-        displayTextElement.draw(win)
-        print (calcGrid[row][col])
+        if  str(calcGrid[row][col]) != "=" :
+            displayString = (displayString + str(calcGrid[row][col])).rjust(150);
+            displayTextElement.undraw()
+            displayTextElement = Text(Point(0, 50), displayString)
+            displayTextElement.draw(win)
+            print (calcGrid[row][col])
         for i in range(5):
             for j in range(4):
                 if not(i == row and j == col):
