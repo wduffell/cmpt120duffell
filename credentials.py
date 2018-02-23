@@ -3,28 +3,40 @@
 # Author: Willow Duffell
 # Created: 2018-02-19
 
+
+def getnames():
+    #get user's first and last name
+    first = input("Enter your FIRST name: ")
+    last = input("Enter your LAST name: ")
+    namelist = [first, last]
+    return namelist
+
+def buildusername(fname, lname):
+    #generate a marist-style username
+    uname = fname + "." + lname
+    return uname
+
+def entandvalpassword():
+    #ask user to create a password
+    password = input ("Create a new password (minimum of 8 characters): ")
+    #ensure the password has at least 8 characters
+    while len(password) < 8:
+        print("Fool of a took! That password is feeble!")
+        print("The length of the password must be at least 8 characters long")
+        password = input ("try again... Create a new password of AT LEAST 8 characters: ")
+    return password
+
+
 def main():
-    
-    first = input("Enter your first name: ")
-    last = input("Enter your last name: ")
+    enamelist = getnames()
+    uname = buildusername(enamelist[0], enamelist[1])
+    passwd = entandvalpassword()
 
-#TODO modify this to generate a Marist-style username
-    uname = first + "." + last
-    
-# ask user to create a new password
-    passwd = input("Create new password (minimum of 8 characters): ")
-
-# TODO modify this to ensure the password has at least 8 characters
-    while len(passwd) < 8:
-        print("Fool of a Took! That password is feeble!")
-        print ("The length of the password should be at least 8 characters long")
-        passwd = input("Create new password:")  
-    
     print("The force is strong with this one...")
-    print ("Account configured. Your new email adress is", uname + "@marist.edu")
-
+    print("Account configured. Your new email address is", uname + "@marist.edu")
 
 
 main()
+
 
 
