@@ -7,7 +7,9 @@
 def getnames():
     #get user's first and last name
     first = input("Enter your FIRST name: ")
+    first = first.lower()
     last = input("Enter your LAST name: ")
+    last = last.lower()
     namelist = [first, last]
     return namelist
 
