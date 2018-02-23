@@ -21,12 +21,19 @@ def buildusername(fname, lname):
 def entandvalpassword():
     #ask user to create a password
     password = input ("Create a new password (minimum of 8 characters): ")
+
+    while not isPassStrong(password):
+        print("Fool of a Took! That password is feeble!")
+        password = input("try again.....Create a new password of AT LEAST 8 characters: ")
+    return password  
+    
+
+def isPassStrong(password):
     #ensure the password has at least 8 characters
-    while len(password) < 8:
-        print("Fool of a took! That password is feeble!")
-        print("The length of the password must be at least 8 characters long")
-        password = input ("try again... Create a new password of AT LEAST 8 characters: ")
-    return password
+    if len(password) < 8:
+       return False
+    else:
+        return True
 
 
 def main():
