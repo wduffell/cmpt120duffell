@@ -59,14 +59,19 @@ def main():
         else:
             if displayString.find('+') > -1:
                 mylist = displayString.split("+")
-                result = int(mylist[0]) + int(mylist[1])
-                displayString = str(result).rjust(150)
+                result = add2numbers(int(mylist[0]), int(mylist[1]))
             elif displayString.find('-') > -1:
                 mylist = displayString.split("-")
-                result = int(mylist[0]) - int(mylist[1])
-                displayString = str(result).rjust(150)
+                result = subtract2numbers (int(mylist[0]), int(mylist[1]))
+            elif displayString.find('*') > -1:
+                mylist = displayString.split("*")
+                result = multiply2numbers (int(mylist[0]), int(mylist[1]))
+            elif displayString.find('/') > -1:
+                mylist = displayString.split("/")
+                result = divide2numbers (int(mylist[0]), int(mylist[1]))
             else:
-                displayString = "ERROR"
+                result = "ERROR"
+            displayString = str(result).rjust(150)                                   
         displayTextElement.undraw()
         displayTextElement = Text(Point(0, 50), displayString)
         displayTextElement.draw(win)

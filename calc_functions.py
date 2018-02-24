@@ -16,8 +16,3 @@ def divide2numbers(x,y):
 def changesign(x):
     return x * -1
     
-def main():
-    z = add2numbers(1,1)
-    print("adding 2 numbers")
-    print(z)
-main()
