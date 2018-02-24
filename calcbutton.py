@@ -11,7 +11,7 @@ calcGrid = [
     [7, 8, 9, '+'],
     [4, 5, 6, '-'],
     [1, 2, 3, '*'],
-    ['', 0,'+/-','/'],
+    ['C', 0,'+/-','/'],
     ['', '', '', '=']
 ]
 buttons = [['','','',''],['','','',''],['','','',''],['','','',''],['','','','']]
@@ -55,7 +55,14 @@ def main():
         buttons[row][col].setFill('lightgreen')
         newstring = str(calcGrid[row][col])
         if  newstring != "=" :
-            displayString = (displayString + str(calcGrid[row][col])).rjust(150);
+             if newstring == "+/-":
+                result = changesign(int(displayString))
+                displayString = str(result).rjust(150)
+             elif newstring == "C":
+                result = ""
+                displayString = str(result).rjust(150)
+             else:
+                displayString = (displayString + str(calcGrid[row][col])).rjust(150);
         else:
             if displayString.find('+') > -1:
                 mylist = displayString.split("+")
