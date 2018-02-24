@@ -52,7 +52,7 @@ def main():
         clicked = win.getMouse()
         print (clicked.getX(), clicked.getY())
         row, col = clickedButton(clicked)
-        buttons[row][col].setFill('lightgreen')
+        buttons[row][col].setFill('lavender')
         newstring = str(calcGrid[row][col])
         if  newstring != "=" :
              if newstring == "+/-":
