@@ -53,12 +53,25 @@ def main():
         print (clicked.getX(), clicked.getY())
         row, col = clickedButton(clicked)
         buttons[row][col].setFill('lightgreen')
-        if  str(calcGrid[row][col]) != "=" :
+        newstring = str(calcGrid[row][col])
+        if  newstring != "=" :
             displayString = (displayString + str(calcGrid[row][col])).rjust(150);
-            displayTextElement.undraw()
-            displayTextElement = Text(Point(0, 50), displayString)
-            displayTextElement.draw(win)
-            print (calcGrid[row][col])
+        else:
+            if displayString.find('+') > -1:
+                mylist = displayString.split("+")
+                result = int(mylist[0]) + int(mylist[1])
+                displayString = str(result).rjust(150)
+            elif displayString.find('-') > -1:
+                mylist = displayString.split("-")
+                result = int(mylist[0]) - int(mylist[1])
+                displayString = str(result).rjust(150)
+            else:
+                displayString = "ERROR"
+        displayTextElement.undraw()
+        displayTextElement = Text(Point(0, 50), displayString)
+        displayTextElement.draw(win)
+        print (calcGrid[row][col])
+        
         for i in range(5):
             for j in range(4):
                 if not(i == row and j == col):
