@@ -58,7 +58,19 @@ def main():
         newstring = str(calcGrid[row][col])
         if  newstring != "=" :
             if newstring == "+/-":
-                result = changesign(int(displayString))
+                result = changesign(float(displayString))
+                displayString = str(result).rjust(150)
+            elif newstring == "%":
+                result = percent(float(displayString))
+                displayString = str(result).rjust(150)
+            elif newstring == "\u221A":
+                result = squareroot(float(displayString))
+                displayString = str(result).rjust(150)
+            elif newstring == "x\u00b2":
+                result = square(float(displayString))
+                displayString = str(result).rjust(150)
+            elif newstring == "1/x":
+                result = inverse(float(displayString))
                 displayString = str(result).rjust(150)
             elif newstring == "C":
                 result = ""
