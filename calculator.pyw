@@ -45,6 +45,11 @@ def createCalculatorButtons():
             buttons[i][j] = calcButton(j * 80, i * 80 + 100, calcGrid[i][j])
 
 def formatResult(resultString):
+
+    #if resultString.find('.') > -1:
+    #    declist = displayString.split("0")
+    #    if (declist[1] = 
+    resultString = "%.2f" % round(resultString,2)
     formattedString = str(resultString).rjust(150)
     return formattedString
     
@@ -64,44 +69,44 @@ def main():
         if  newstring != "=" :
             if newstring == "+/-":
                 result = changesign(float(displayString))
-                displayString = formatResult(result)
+                displayString = formatResult(float(result))
             elif newstring == "%":
                 result = percent(float(displayString))
-                displayString = formatResult(result)
+                displayString = formatResult(float(result))
             elif newstring == "\u221A":
                 result = squareroot(float(displayString))
-                displayString = formatResult(result)
+                displayString = formatResult(float(result))
             elif newstring == "x\u00b2":
                 result = square(float(displayString))
-                displayString = formatResult(result)
+                displayString = formatResult(float(result))
             elif newstring == "1/x":
                 result = inverse(float(displayString))
-                displayString = formatResult(result)
+                displayString = formatResult(float(result))
             elif newstring == "C":
                 result = ""
-                displayString = formatResult(result)
+                displayString = formatResult(float(result))
             elif newstring == "MC":
                 memory = 0
             elif newstring == "MR":
                 result = memory
-                displayString = formatResult(result)
+                displayString = formatResult(float(result))
             elif newstring == "MS":
                 memory = displayString
                 result = ""
-                displayString = formatResult(result)
+                displayString = formatResult(float(result))
             elif newstring == "M+":
                 result = add2numbers(float(memory), float(displayString))
-                displayString = formatResult(result)
+                displayString = formatResult(float(result))
             elif newstring == "M-":
                 result = subtract2numbers (float(memory), float(displayString))
-                displayString = formatResult(result)
+                displayString = formatResult(float(result))
             else:
-                displayString = (displayString + formatResult(calcGrid[row][col]))
+                displayString = (displayString + str(calcGrid[row][col])).rjust(150);
         else:
             if displayString.find('+') > -1:
                 mylist = displayString.split("+")
                 result = add2numbers(float(mylist[0]), float(mylist[1]))
-            elif displayString.find('-') > -1:
+            elif displayString.find('-') > 0:
                 mylist = displayString.split("-")
                 result = subtract2numbers (float(mylist[0]), float(mylist[1]))
             elif displayString.find('*') > -1:
@@ -112,7 +117,7 @@ def main():
                 result = divide2numbers (float(mylist[0]), float(mylist[1]))
             else:
                 result = "ERROR"
-            displayString = formatResult(result)                                 
+            displayString = formatResult(float(result))                                 
         displayTextElement.undraw()
         displayTextElement = Text(Point(0, 50), displayString)
         displayTextElement.draw(win)
