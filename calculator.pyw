@@ -1,20 +1,21 @@
 from graphics import *
 from calc_functions import *
 
-win = GraphWin('Calc', 320, 500)
+win = GraphWin('Calc', 400, 580)
 
 # Create the text for the display area
 
 displayTextElement = Text(Point(0, 50), "")
 
 calcGrid = [
-    [7, 8, 9, '+'],
-    [4, 5, 6, '-'],
-    [1, 2, 3, '*'],
-    ['C', 0,'+/-','/'],
-    ['', '', '', '=']
+    ['MC', 'M+', 'M-', 'MR', 'MS'],
+    ['C','%', '\u221A', 'x\u00b2','1/x'], 
+    [7, 8, 9, '+','+/-'],
+    [4, 5, 6, '-',''],
+    [1, 2, 3, '*',''],
+    ['.', 0,'=','/','']
 ]
-buttons = [['','','',''],['','','',''],['','','',''],['','','',''],['','','','']]
+buttons = [['','','','',''],['','','','',''],['','','','',''],['','','','',''],['','','','',''],['','','','','']]
 
 def calcButton(x, y, value):
     button = Rectangle(Point(x,y),Point(x + 80,y + 80))
@@ -31,19 +32,20 @@ def inside(clicked, button):
     return False
 
 def clickedButton(clicked):
-    for i in range(5):
-        for j in range(4):
+    for i in range(6):
+        for j in range(5):
             if clicked.getX() > buttons[i][j].p1.getX()and clicked.getX() < buttons[i][j].p2.getX():
                 if clicked.getY() > buttons[i][j].p1.getY()and clicked.getY() < buttons[i][j].p2.getY():
                     return i, j
     return -1, -1
 
 def createCalculatorButtons():
-    for i in range(5):
-        for j in range(4):
+    for i in range(6):
+        for j in range(5):
             buttons[i][j] = calcButton(j * 80, i * 80 + 100, calcGrid[i][j])
 
 def main():
+    memory = 0
     createCalculatorButtons()
     displayString = ''
     displayTextElement = Text(Point(0, 50), "")
@@ -55,27 +57,42 @@ def main():
         buttons[row][col].setFill('lavender')
         newstring = str(calcGrid[row][col])
         if  newstring != "=" :
-             if newstring == "+/-":
+            if newstring == "+/-":
                 result = changesign(int(displayString))
                 displayString = str(result).rjust(150)
-             elif newstring == "C":
+            elif newstring == "C":
                 result = ""
                 displayString = str(result).rjust(150)
-             else:
+            elif newstring == "MC":
+                memory = 0
+            elif newstring == "MR":
+                result = memory
+                displayString = str(result).rjust(150)
+            elif newstring == "MS":
+                memory = displayString
+                result = ""
+                displayString = str(result).rjust(150)
+            elif newstring == "M+":
+                result = add2numbers(float(memory), float(displayString))
+                displayString = str(result).rjust(150)
+            elif newstring == "M-":
+                result = subtract2numbers (float(memory), float(displayString))
+                displayString = str(result).rjust(150)
+            else:
                 displayString = (displayString + str(calcGrid[row][col])).rjust(150);
         else:
             if displayString.find('+') > -1:
                 mylist = displayString.split("+")
-                result = add2numbers(int(mylist[0]), int(mylist[1]))
+                result = add2numbers(float(mylist[0]), float(mylist[1]))
             elif displayString.find('-') > -1:
                 mylist = displayString.split("-")
-                result = subtract2numbers (int(mylist[0]), int(mylist[1]))
+                result = subtract2numbers (float(mylist[0]), float(mylist[1]))
             elif displayString.find('*') > -1:
                 mylist = displayString.split("*")
-                result = multiply2numbers (int(mylist[0]), int(mylist[1]))
+                result = multiply2numbers (float(mylist[0]), float(mylist[1]))
             elif displayString.find('/') > -1:
                 mylist = displayString.split("/")
-                result = divide2numbers (int(mylist[0]), int(mylist[1]))
+                result = divide2numbers (float(mylist[0]), float(mylist[1]))
             else:
                 result = "ERROR"
             displayString = str(result).rjust(150)                                   
@@ -84,8 +101,8 @@ def main():
         displayTextElement.draw(win)
         print (calcGrid[row][col])
         
-        for i in range(5):
-            for j in range(4):
+        for i in range(6):
+            for j in range(5):
                 if not(i == row and j == col):
                     buttons[i][j].setFill('lightblue')
 
