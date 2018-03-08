@@ -44,6 +44,11 @@ def createCalculatorButtons():
         for j in range(5):
             buttons[i][j] = calcButton(j * 80, i * 80 + 100, calcGrid[i][j])
 
+def formatResult(resultString):
+    formattedString = str(resultString).rjust(150)
+    return formattedString
+    
+
 def main():
     memory = 0
     createCalculatorButtons()
@@ -59,39 +64,39 @@ def main():
         if  newstring != "=" :
             if newstring == "+/-":
                 result = changesign(float(displayString))
-                displayString = str(result).rjust(150)
+                displayString = formatResult(result)
             elif newstring == "%":
                 result = percent(float(displayString))
-                displayString = str(result).rjust(150)
+                displayString = formatResult(result)
             elif newstring == "\u221A":
                 result = squareroot(float(displayString))
-                displayString = str(result).rjust(150)
+                displayString = formatResult(result)
             elif newstring == "x\u00b2":
                 result = square(float(displayString))
-                displayString = str(result).rjust(150)
+                displayString = formatResult(result)
             elif newstring == "1/x":
                 result = inverse(float(displayString))
-                displayString = str(result).rjust(150)
+                displayString = formatResult(result)
             elif newstring == "C":
                 result = ""
-                displayString = str(result).rjust(150)
+                displayString = formatResult(result)
             elif newstring == "MC":
                 memory = 0
             elif newstring == "MR":
                 result = memory
-                displayString = str(result).rjust(150)
+                displayString = formatResult(result)
             elif newstring == "MS":
                 memory = displayString
                 result = ""
-                displayString = str(result).rjust(150)
+                displayString = formatResult(result)
             elif newstring == "M+":
                 result = add2numbers(float(memory), float(displayString))
-                displayString = str(result).rjust(150)
+                displayString = formatResult(result)
             elif newstring == "M-":
                 result = subtract2numbers (float(memory), float(displayString))
-                displayString = str(result).rjust(150)
+                displayString = formatResult(result)
             else:
-                displayString = (displayString + str(calcGrid[row][col])).rjust(150);
+                displayString = (displayString + formatResult(calcGrid[row][col]))
         else:
             if displayString.find('+') > -1:
                 mylist = displayString.split("+")
@@ -107,7 +112,7 @@ def main():
                 result = divide2numbers (float(mylist[0]), float(mylist[1]))
             else:
                 result = "ERROR"
-            displayString = str(result).rjust(150)                                   
+            displayString = formatResult(result)                                 
         displayTextElement.undraw()
         displayTextElement = Text(Point(0, 50), displayString)
         displayTextElement.draw(win)
