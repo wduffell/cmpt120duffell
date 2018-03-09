@@ -44,16 +44,16 @@ def createCalculatorButtons():
         for j in range(5):
             buttons[i][j] = calcButton(j * 80, i * 80 + 100, calcGrid[i][j])
 
-def formatResult(resultString):
-
-    #if resultString.find('.') > -1:
-    #    declist = displayString.split("0")
-    #    if (declist[1] = 
-    resultString = "%.2f" % round(resultString,2)
-    formattedString = str(resultString).rjust(150)
+def formatResult(theresult):
+    resultString = str(theresult)
+    if resultString.find('.') > -1:
+        resultString = float(resultString)
+        resultString= "%.2f" % round(resultString, 2)
+        formattedString = str(resultString).rjust(150)
+    else:
+        formattedString = str(resultString).rjust(150)
     return formattedString
     
-
 def main():
     memory = 0
     createCalculatorButtons()
@@ -69,37 +69,46 @@ def main():
         if  newstring != "=" :
             if newstring == "+/-":
                 result = changesign(float(displayString))
-                displayString = formatResult(float(result))
+                displayString = formatResult(result)
             elif newstring == "%":
                 result = percent(float(displayString))
-                displayString = formatResult(float(result))
+                displayString = formatResult(result)
             elif newstring == "\u221A":
                 result = squareroot(float(displayString))
-                displayString = formatResult(float(result))
+                displayString = formatResult(result)
             elif newstring == "x\u00b2":
                 result = square(float(displayString))
-                displayString = formatResult(float(result))
+                displayString = formatResult(result)
             elif newstring == "1/x":
                 result = inverse(float(displayString))
-                displayString = formatResult(float(result))
+                displayString = formatResult(result)
             elif newstring == "C":
                 result = ""
-                displayString = formatResult(float(result))
+                displayString = formatResult(result)
             elif newstring == "MC":
                 memory = 0
             elif newstring == "MR":
                 result = memory
-                displayString = formatResult(float(result))
+                displayString = formatResult(result)
             elif newstring == "MS":
-                memory = displayString
+                if (displayString != ""):
+                    memory = displayString
                 result = ""
-                displayString = formatResult(float(result))
+                displayString = formatResult(result)
             elif newstring == "M+":
-                result = add2numbers(float(memory), float(displayString))
-                displayString = formatResult(float(result))
+                if displayString == "":
+                    mem = 0
+                else:
+                    mem = displayString
+                result = add2numbers(float(memory), float(mem))
+                displayString = formatResult(result)
             elif newstring == "M-":
-                result = subtract2numbers (float(memory), float(displayString))
-                displayString = formatResult(float(result))
+                if displayString == "":
+                    mem = 0
+                else:
+                    mem = displayString
+                result = subtract2numbers (float(memory), float(mem))
+                displayString = formatResult(result)
             else:
                 displayString = (displayString + str(calcGrid[row][col])).rjust(150);
         else:
@@ -117,7 +126,7 @@ def main():
                 result = divide2numbers (float(mylist[0]), float(mylist[1]))
             else:
                 result = "ERROR"
-            displayString = formatResult(float(result))                                 
+            displayString = formatResult(result)                                 
         displayTextElement.undraw()
         displayTextElement = Text(Point(0, 50), displayString)
         displayTextElement.draw(win)
