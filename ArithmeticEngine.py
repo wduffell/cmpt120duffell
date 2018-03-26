@@ -2,6 +2,7 @@
 # Willow Duffell
 # 19-3-2018
 ###
+
 def showIntro():
     print("Welcome to the Arithmetic Engine!")
     print("=================================\n")
@@ -30,7 +31,7 @@ def doLoop():
                 result = num1 * num2
             elif cmd == "div":
                 result = num1 // num2
-            elif cmd == "quit":
+            elif cmd == "quit": # You should probably have this as a separate condition
                 break
             else:
                 print ("Sorry" ,cmd, "is not a valid command: ")
@@ -46,4 +47,5 @@ def main():
     doLoop()
     showOutro()
     
-main()
+main()
+
