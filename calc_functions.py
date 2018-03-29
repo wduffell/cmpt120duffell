@@ -24,23 +24,26 @@ def square(x):
     return x ** 2
 def inverse(x):
     return 1 / x
-def xy(x,y):
+def xyfunc(x,y):
     return x ** y
 def sin(x):
-    return math.sin(x)
+    return math.sin(math.radians(x))
 def cos(x):
-    return math.cos(x)
+    return math.cos(math.radians(x))
 def tan(x):
-    return math.tan(x)
+    return math.tan(math.radians(x))
 def tenx(x):
     return 10 ** x
 def log(x):
     return math.log10(x)
 def arcsin(x):
-    return math.asin(x)
+    x = math.asin(x)
+    return math.degrees(x)
 def arccos(x):
-    return math.acos(x)
+    x = math.acos(x)
+    return math.degrees(x)
 def arctan(x):
-    return math.atan(x)
+    x = math.atan(x)
+    return math.degrees(x)
 def ln(x):
     return math.log(x)
