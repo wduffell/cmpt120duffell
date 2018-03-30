@@ -3,30 +3,31 @@
 # Author: Willow Duffell
 # Created: 2018-03-26
 
-board = [] + list(range(1,10))
 symbol = [ " ", "x", "o" ]
 
-def printRow(row):   
-    print(board[7], board[8], board[9])
-    print(board[4], board[5], board[6])
-    print(board[1], board[2], board[3])
-    print()
+#def printRow(row):   
+   
 def printBoard(board):
-    print ("+-----------+")
-    print ("|  |  |  |")
-    print ("+-----------+")
-    print ("|  |  |  |")
-    print ("+-----------+")
-    print ("|  |  |  |")
-    print ("+-----------+")
+    print("+-----------+")
+    print("|   |   |   |")
+    print("+-----------+")
+    print("|   |   |   |")
+    print("+-----------+")
+    print("|   |   |   |")
+    print("+-----------+")
+
+printBoard(['','','','','','','','',''])
 
 #def markBoard(board, row, col, player):
+   # if board == '':
+   # else:
+        #print("Sorry you can't go there")
 # check to see whether the desired square is blank
 # if so, set it to the player number
 #pass
 
 #def getPlayerMove():
-input("") # prompt the user separately for the row and column numbers
+#input("") # prompt the user separately for the row and column numbers
 #return (0,0) # then return that row and column instead of (0,0)
 
 #def hasBlanks(board):
