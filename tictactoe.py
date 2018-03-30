@@ -4,19 +4,24 @@
 # Created: 2018-03-26
 
 symbol = [ " ", "x", "o" ]
+board = [
+        ['0','0','0'],
+        ['0','0','0'],
+        ['0','0','0']
+        ] 
 
-#def printRow(row):   
+def printRow(row):
+   
+    
+    output =  "| " + str(board[row][0]) + " | " + str(board[row][1]) + " | " + str(board[row][2]) + " |"
+    print(output)
    
 def printBoard(board):
+    for i in range(3):
+        print("+-----------+")
+        printRow(i)
     print("+-----------+")
-    print("| ",board[6],"| ",board[7],"| ",board[8],"|")
-    print("+-----------+")
-    print("| ",board[3],"| ",board[4],"| ",board[5],"|")
-    print("+-----------+")
-    print("| ",board[0],"| ",board[1],"| ",board[2],"|")
-    print("+-----------+")
-
-printBoard(['','','','','','','','',''])
+    
 
 #def markBoard(board, row, col, player):
    # if board == '':
@@ -38,21 +43,12 @@ printBoard(['','','','','','','','',''])
 #return True # if no square is blank, return False
 
 def main():
-    board = [
-        ['0','0','0'],
-        ['0','0','0'],
-        ['0','0','0']
-        ] # TODO replace this with a three-by-three matrix of zeros
+  
     player = 1
-    while hasBlanks(board):
-        printBoard(board)
-        row,col = getPlayerMove()
-        markBoard(board,row,col,player)
-        player = player % 2 + 1 # switch player for next turn
-
-
-
-
-
+ #   while hasBlanks(board):
+    printBoard(board)
+  #      row,col = getPlayerMove()
+   #     markBoard(board,row,col,player)
+  #      player = player % 2 + 1 # switch player for next turn
 
 main()
