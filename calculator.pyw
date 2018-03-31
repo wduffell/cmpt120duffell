@@ -53,6 +53,21 @@ def formatResult(theresult):
         resultString= "%.2f" % round(resultString, 2)
     formattedString = str(resultString).rjust(225)
     return formattedString
+
+def evalgroup(groupString)
+    if groupString.find('+') > -1:
+        mygrouplist = groupString.split("+")
+        groupresult = add2numbers(float(mygrouplist[0]), float(mygrouplist[1]))
+    elif groupString.find('-') > 0:
+        mygrouplist = groupString.split("-")
+        groupresult = subtract2numbers (float(mygrouplist[0]), float(mygrouplist[1]))
+    elif groupString.find('*') > -1:
+        mygrouplist = groupString.split("*")
+        groupresult = multiply2numbers (float(mygrouplist[0]), float(mygrouplist[1]))
+    elif groupString.find('/') > -1:
+        mygrouplist = groupString.split("/")
+        groupresult = divide2numbers (float(mygrouplist[0]), float(mygrouplist[1]))
+    return groupresult
     
 def main():
     memory = 0
@@ -170,7 +185,7 @@ def main():
                     result = "ERROR"
                 displayString = formatResult(result)
             elif newstring == "MC":
-                memory = 0
+                memory = 0                
             elif newstring == "MR":
                 result = memory
                 displayString = formatResult(result)
@@ -196,6 +211,14 @@ def main():
             else:
                 displayString = (displayString + str(calcGrid[row][col])).rjust(225);
         else:
+            groupopen = displayString.find('(')
+            if groupopen > -1:
+                groupclose = displayString.find(')')
+                if groupclose == -1:
+                    displayString + ')'
+                    groupclose = displayString.find(')')
+                groupstring = displayString[groupopen+1:groupclose]
+
             if displayString.find('+') > -1:
                 mylist = displayString.split("+")
                 result = add2numbers(float(mylist[0]), float(mylist[1]))
