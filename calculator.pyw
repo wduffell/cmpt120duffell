@@ -79,6 +79,8 @@ def main():
     eqtdisplayTextElement.draw(win)
     displayTextElement = Text(Point(15, 75), "")
     displayTextElement.draw(win)
+
+    displaynext = False
     
     xy = False
     xyval=0
@@ -122,6 +124,14 @@ def main():
             elif newstring == "C":
                 result = ''
                 displayString = ''
+                displaynext = False
+                eqtdisplayTextElement.undraw()
+                eqtdisplayTextElement = Text(Point(0, 15), displayString)
+                eqtdisplayTextElement.draw(win)
+                displayTextElement.undraw()
+                displayTextElement = Text(Point(15, 75), displayString)
+                displayTextElement.draw(win)
+                
                 xy = False
                 xyval = 0
             elif newstring == "sin":
@@ -214,7 +224,22 @@ def main():
                 result = subtract2numbers (float(memory), float(mem))
                 displayString = formatResult(result)
             else:
-                displayString = (displayString + str(calcGrid[row][col])).rjust(225);
+                displayString = (displayString + str(calcGrid[row][col])).rjust(225)
+                if (newstring.isdigit() == True):
+                    if (displaynext):
+                        displayTextElement.undraw()
+                        displayTextElement = Text(Point(15, 75), newstring.rjust(225))
+                        displayTextElement.draw(win)
+                    else:
+                        displayTextElement.undraw()
+                        displayTextElement = Text(Point(15, 75), displayString)
+                        displayTextElement.draw(win)
+                else:
+                    eqtdisplayTextElement.undraw()
+                    eqtdisplayTextElement = Text(Point(0, 15), displayString)
+                    eqtdisplayTextElement.draw(win)
+                    displaynext = True
+                                    
         else:
             groupopen = displayString.find('(')
             if groupopen > -1:
@@ -245,12 +270,13 @@ def main():
                     result = "ERROR"
             displayString = formatResult(result)                                 
 
-        eqtdisplayTextElement.undraw()
-        eqtdisplayTextElement = Text(Point(0, 15), displayString)
-        eqtdisplayTextElement.draw(win)
-        displayTextElement.undraw()
-        displayTextElement = Text(Point(15, 75), displayString)
-        displayTextElement.draw(win)
+            eqtdisplayTextElement.undraw()
+            eqtdisplayTextElement = Text(Point(0, 15), "")
+            eqtdisplayTextElement.draw(win)
+            
+            displayTextElement.undraw()
+            displayTextElement = Text(Point(15, 75), displayString)
+            displayTextElement.draw(win)
         print (calcGrid[row][col])
         
         for i in range(rows):
