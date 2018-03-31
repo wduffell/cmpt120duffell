@@ -54,21 +54,30 @@ def printBoardDebug(board):
     print(output)
 
     
-#def getPlayerMove():
-#input("") # prompt the user separately for the row and column numbers
-#return (0,0) # then return that row and column instead of (0,0)
+def getPlayerMove(playerstring):
+    playerrow = input(playerstring +" - Pick where you want to go. Select a row 1-3: ")
+    if int(playerrow) > 3:
+        playerrow = '3'
+    playercol = input("Now pick a column 1, 2, or 3: ")
+    if int (playercol) > 3:
+        playercol = '3'
+    playerchoice = [playerrow, playercol]
+    return playerchoice
 
-#def hasBlanks(board):
-# for each row in the board...
-# for each square in the row...
-# check whether the square is blank
-# if so, return True
-#return True # if no square is blank, return False
+def hasBlanks():
+    for i in range (3):
+        for j in range (3):
+            if board[i][j] == 0:
+                return True
+    return False
+
+
+
 
 def main():
     player = 1
     printBoard(board)
-    while 1:
+    while hasBlanks():
         if player == 1:
             playerstring = "Player 1"
             currentplayer = 1;
@@ -77,17 +86,14 @@ def main():
             playerstring = "Player 2"
             currentplayer = 2
             player = 1
-        playerrow = input(playerstring +" - Pick where you want to go. Select a row 1-3: ")
-        playercol = input("Now pick a column 1, 2, or 3: ")
-        
-        playerrow = int(playerrow)-1
-        playercol = int(playercol)-1
+        playerchoicelist = getPlayerMove(playerstring)     
+        playerrow = int(playerchoicelist[0])-1
+        playercol = int(playerchoicelist[1])-1
         if markBoard(board, int(playerrow),int(playercol),int(currentplayer)) == False:
             player = currentplayer
         printBoard(board)               
-    #while hasBlanks(board):
-    #row,col = getPlayerMove()
-    #markBoard(board,row,col,player)
-    #player = player % 2 + 1 # switch player for next turn
+    print("Game over... Thanks for playing")
+    
+   
 
 main()
