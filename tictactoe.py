@@ -11,8 +11,14 @@ board = [
         ] 
 
 def printRow(row):
-   
-    
+    for i in range(3):
+        value = board[row][i]
+        if value == '0':
+            board[row][i] = symbol[0]
+        elif value == '1':
+            board[row][i] = symbol[1]
+        elif value == '2':
+            board[row][i] = symbol[2]
     output =  "| " + str(board[row][0]) + " | " + str(board[row][1]) + " | " + str(board[row][2]) + " |"
     print(output)
    
@@ -24,9 +30,6 @@ def printBoard(board):
     
 
 #def markBoard(board, row, col, player):
-   # if board == '':
-   # else:
-        #print("Sorry you can't go there")
 # check to see whether the desired square is blank
 # if so, set it to the player number
 #pass
