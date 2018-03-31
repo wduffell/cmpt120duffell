@@ -5,7 +5,8 @@ win = GraphWin('Calc', 560, 580)
 
 # Create the text for the display area
 
-displayTextElement = Text(Point(0, 50), "")
+eqtdisplayTextElement = Text(Point(0, 15), "")
+displayTextElement = Text(Point(15, 75), "")
 cols = 7
 rows = 6
 
@@ -54,7 +55,7 @@ def formatResult(theresult):
     formattedString = str(resultString).rjust(225)
     return formattedString
 
-def evalgroup(groupString)
+def evalgroup(groupString):
     if groupString.find('+') > -1:
         mygrouplist = groupString.split("+")
         groupresult = add2numbers(float(mygrouplist[0]), float(mygrouplist[1]))
@@ -73,8 +74,12 @@ def main():
     memory = 0
     createCalculatorButtons()
     displayString = ''
-    displayTextElement = Text(Point(0, 50), "")
+
+    eqtdisplayTextElement = Text(Point(0, 15), "")
+    eqtdisplayTextElement.draw(win)
+    displayTextElement = Text(Point(15, 75), "")
     displayTextElement.draw(win)
+    
     xy = False
     xyval=0
     while 1 == 1:
@@ -239,8 +244,12 @@ def main():
                 else:
                     result = "ERROR"
             displayString = formatResult(result)                                 
+
+        eqtdisplayTextElement.undraw()
+        eqtdisplayTextElement = Text(Point(0, 15), displayString)
+        eqtdisplayTextElement.draw(win)
         displayTextElement.undraw()
-        displayTextElement = Text(Point(0, 50), displayString)
+        displayTextElement = Text(Point(15, 75), displayString)
         displayTextElement.draw(win)
         print (calcGrid[row][col])
         
