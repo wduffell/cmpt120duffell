@@ -5,6 +5,10 @@ win = GraphWin('Calc', 560, 580)
 
 # Create the text for the display area
 
+# JA: Some of the basic functions are still not working
+# The new functions are giving errors. The functions that take a single operand, e.g. sin, should be
+# called as soon as the function is pressed instead of waiting for the =
+
 eqtdisplayTextElement = Text(Point(0, 15), "")
 displayTextElement = Text(Point(15, 75), "")
 cols = 7
