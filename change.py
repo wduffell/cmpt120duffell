@@ -9,8 +9,9 @@ def main():
     nickels = int(input("Nickels: "))
     pennies = int(input("Pennies: "))
     total = .25 * quarters + .10 * dimes + .05 * nickels + .01 * pennies
+    fee = total * .03
     print()
-    str = "The total value of your change is ${0:0.2f}".format(total)
-    print(str.format(total))
+    str = "The total value of your change is ${0:0.2f}. Your fee is ${1:0.2f}"
+    print(str.format(total, fee))
 
 main()
