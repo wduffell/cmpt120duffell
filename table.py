@@ -3,9 +3,9 @@
 import math
 
 def main():
-    temp = "{:4} {:4} {:5} {:4.1f}"
+    temp = "{frst:4} {sec:4} {third:5} {fourth:4.1f}"
     for i in range (1,21):
-        print(temp.format(i, i*10, i*100, math.sqrt(i*100)))
+        print(temp.format(frst=i, sec=i*10, third=i*100, fourth=math.sqrt(i*100)))
 
 
 main()
