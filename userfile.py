@@ -17,3 +17,15 @@ def main():
     for line in infile:
         # get the first and last names from line
         first, last = line.split()
+        # create a username
+        uname = (first[0] + last[:7].lower())
+        # write it to the output file
+        print(uname, file = outputfile)
+
+    #close both files
+    infile.close()
+    outfile.clos()
+
+    print("Usernames have been written to", outfileName)
+
+main()
