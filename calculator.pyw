@@ -3,18 +3,16 @@ from calc_functions import *
 
 win = GraphWin('Calc', 480, 660)
 
-# Create the text for the display area
 
-eqtdisplayTextElement = Text(Point(0, 15), "")
-displayTextElement = Text(Point(15, 75), "")
+
 cols = 6
 rows = 7
 
 calcGrid = [
     ['MC', 'M+', 'M-', 'MR', 'MS', ''],
     ['sin', 'sin^-1', 'cos', 'cos^-1', 'tan', 'tan^-1'],
-    ['\u221A', 'x\u00b2', 'x^y', '1/x','10^x','ln'], 
-    ['C',7, 8, 9, '+','+/-'],
+    ['+/-', '\u221A', 'x\u00b2', '1/x','10^x','ln'], 
+    ['C',7, 8, 9, '+','x^y'],
     ['CE',4, 5, 6, '-','%'],
     ['',1, 2, 3, '*',')'],
     ['','.', 0,'=','/','(']
@@ -48,6 +46,10 @@ def createCalculatorButtons():
         for j in range(cols):
             buttons[i][j] = calcButton(j * 80, i * 80 + 100, calcGrid[i][j])
 
+def undrawDisplays():
+    eqtdisplayTextElement.draw(win)
+    displayTextElement.draw(win)
+    
 def formatResult(theresult):
     resultString = str(theresult)
     if resultString.find('.') > -1:
@@ -55,6 +57,7 @@ def formatResult(theresult):
         resultString= "%.2f" % round(resultString, 2)
     formattedString = str(resultString).rjust(225)
     return formattedString
+
 
 def evalgroup(groupString):
     if groupString.find('+') > -1:
@@ -71,231 +74,151 @@ def evalgroup(groupString):
         groupresult = divide2numbers (float(mygrouplist[0]), float(mygrouplist[1]))
     return groupresult
 
-def is_number(num):
-    try:
-        float(num)
-        return True
-    except ValueError:
-        return False
+
+
+def memorybuttonpressed(newstring, memory, displayString):
+
+    if newstring == "MC":
+        memory = 0
+        result = displayString
+         
+    elif newstring == "MR":
+        result = memory
+
+    elif newstring == "MS":
+        memory = displayString
+        result = displayString
+
+    elif newstring == "M+":
+        result = add2numbers(float(memory), float(displayString))
+
+    elif newstring == "M-":
+        result = subtract2numbers (float(memory), float(displayString))
+       
+    return memory, result
+
+def calculateresult(displayString, eqtdisplayString):
+
+    if displayString.find('+') > -1:
+        mylist = displayString.split("+")
+        result = add2numbers(float(mylist[0]), float(mylist[1]))
+    elif displayString.find('-') > 0:
+        mylist = displayString.split("-")
+        result = subtract2numbers (float(mylist[0]), float(mylist[1]))
+    elif displayString.find('*') > -1:
+        mylist = displayString.split("*")
+        result = multiply2numbers (float(mylist[0]), float(mylist[1]))
+    elif displayString.find('/') > -1:
+        mylist = displayString.split("/")
+        result = divide2numbers (float(mylist[0]), float(mylist[1]))
+    elif displayString.find('x^y') > -1:
+        result = xyfunc(xyval, float(displayString))
+
+    displayString = formatResult(result)
+    return displayString, eqtdisplayString
+
+def advancedbuttons(newstring, displayString):
+
+    if newstring == "+/-":
+        result = changesign(float(displayString))
+    elif newstring == "%":
+        result = percent(float(displayString))
+    elif newstring == "\u221A":
+        result = squareroot(float(displayString))
+    elif newstring == "x\u00b2":
+        result = square(float(displayString))
+    elif newstring == "1/x":
+        result = inverse(float(displayString))
+    elif newstring == "sin":
+        result = sin(float(displayString))
+    elif newstring == "cos":
+        result = cos(float(displayString))
+    elif newstring == "tan":
+        result = tan(float(displayString))
+    elif newstring == "sin^-1":
+        fdisplay = float(displayString)
+        if fdisplay >= -1 and fdisplay <= 1:
+            result = arcsin(float(fdisplay))
+        else:
+            result = "0"
+    elif newstring == "cos^-1":
+        fdisplay = float(displayString)
+        if fdisplay >= -1 and fdisplay <= 1:
+            result = arccos(float(fdisplay))
+        else:
+            result = "0"
+    elif newstring == "tan^-1":
+        result = arctan(float(fdisplay))
+    elif newstring == "10^x":
+        result = tenx(float(displayString))
+    elif newstring == "log":
+        result = log(float(displayString))
+    elif newstring == "ln":
+        result = ln(float(displayString))
+
+    return displayString
+
     
 def main():
     memory = 0
     createCalculatorButtons()
-    displayString = ''
+    displayString = '0'
+    eqtdisplayString = ''
 
-    eqtdisplayTextElement = Text(Point(0, 15), "")
+    myeqtTextString = str(eqtdisplayString).rjust(225)
+    eqtdisplayTextElement = Text(Point(0, 15), myeqtTextString)
     eqtdisplayTextElement.draw(win)
-    displayTextElement = Text(Point(15, 75), "")
+
+    myTextString = str(displayString).rjust(225)
+    displayTextElement = Text(Point(15, 75), myTextString)
     displayTextElement.draw(win)
 
-    displaynext = False
-    
-    xy = False
-    xyval=0
     while 1 == 1:
         clicked = win.getMouse()
         print (clicked.getX(), clicked.getY())
         row, col = clickedButton(clicked)
-        buttons[row][col].setFill('lavender')
         newstring = str(calcGrid[row][col])
-        try:
-            if int(newstring) >= 0 and int(newstring) <= 9:
-                print("Between 0 and 9")
-        except:
-            print("Not between 0 and 9")
-            
-        if  newstring != "=" :
-            if newstring == "+/-":
-                if displayString != '':
-                    result = changesign(float(displayString))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "%":
-                if displayString != '':
-                    result = percent(float(displayString))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "\u221A":
-                if displayString != '':
-                    result = squareroot(float(displayString))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "x\u00b2":
-                if displayString != '':
-                    result = square(float(displayString))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "1/x":
-                if displayString != '':
-                    result = inverse(float(displayString))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "C":
-                result = ''
-                displayString = ''
-                displaynext = False
-                eqtdisplayTextElement.undraw()
-                eqtdisplayTextElement = Text(Point(0, 15), displayString)
-                eqtdisplayTextElement.draw(win)
-                displayTextElement.undraw()
-                displayTextElement = Text(Point(15, 75), displayString)
-                displayTextElement.draw(win)
-                
-                xy = False
-                xyval = 0
-            elif newstring == "sin":
-                if displayString != '':
-                    result = sin(float(displayString))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "cos":
-                if displayString != '':
-                    result = cos(float(displayString))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "tan":
-                if displayString != '':
-                    result = tan(float(displayString))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "sin^-1":
-                fdisplay = float(displayString)
-                if fdisplay >= -1 and fdisplay <= 1:
-                    result = arcsin(float(fdisplay))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "cos^-1":
-                fdisplay = float(displayString)
-                if fdisplay >= -1 and fdisplay <= 1:
-                    result = arccos(float(fdisplay))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "tan^-1":
-                fdisplay = float(displayString)
-                if displayString != '':
-                    result = arctan(float(fdisplay))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "x^y":
-                if displayString != '':
-                    xy = True
-                    xyval = float(displayString)
-                    displayString = ''
-                else:
-                    result = "ERROR"
-                    displayString = formatResult(result)
-            elif newstring == "10^x":
-                if displayString != '':
-                    result = tenx(float(displayString))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "log":
-                if displayString != '':
-                    result = log(float(displayString))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "ln":
-                if displayString != '':
-                    result = ln(float(displayString))
-                else:
-                    result = "ERROR"
-                displayString = formatResult(result)
-            elif newstring == "MC":
-                memory = 0                
-            elif newstring == "MR":
-                result = memory
-                displayString = formatResult(result)
-            elif newstring == "MS":
-                if (displayString != ""):
-                    memory = displayString
-                result = ""
-                displayString = formatResult(result)
-            elif newstring == "M+":
-                if displayString == "":
-                    mem = 0
-                else:
-                    mem = displayString
-                result = add2numbers(float(memory), float(mem))
-                displayString = formatResult(result)
-            elif newstring == "M-":
-                if displayString == "":
-                    mem = 0
-                else:
-                    mem = displayString
-                result = subtract2numbers (float(memory), float(mem))
-                displayString = formatResult(result)
-            else:
-                displayString = (displayString + str(calcGrid[row][col])).rjust(225)
-                if (newstring.isdigit() == True):
-                    if (displaynext):
-                        displayTextElement.undraw()
-                        displayTextElement = Text(Point(15, 75), newstring.rjust(225))
-                        displayTextElement.draw(win)
-                    else:
-                        displayTextElement.undraw()
-                        displayTextElement = Text(Point(15, 75), displayString)
-                        displayTextElement.draw(win)
-                else:
-                    eqtdisplayTextElement.undraw()
-                    eqtdisplayTextElement = Text(Point(0, 15), displayString)
-                    eqtdisplayTextElement.draw(win)
-                    displaynext = True
-                                    
-        else:
-            groupopen = displayString.find('(')
-            if groupopen > -1:
-                groupclose = displayString.find(')')
-                if groupclose == -1:
-                    displayString + ')'
-                    groupclose = displayString.find(')')
-                groupstring = displayString[groupopen+1:groupclose]
-
-            if displayString.find('+') > -1:
-                mylist = displayString.split("+")
-                result = add2numbers(float(mylist[0]), float(mylist[1]))
-            elif displayString.find('-') > 0:
-                mylist = displayString.split("-")
-                result = subtract2numbers (float(mylist[0]), float(mylist[1]))
-            elif displayString.find('*') > -1:
-                mylist = displayString.split("*")
-                result = multiply2numbers (float(mylist[0]), float(mylist[1]))
-            elif displayString.find('/') > -1:
-                mylist = displayString.split("/")
-                result = divide2numbers (float(mylist[0]), float(mylist[1]))
-            else:
-                if xy == True:
-                    result = xyfunc(xyval, float(displayString))
-                    xy = False
-                    xyval = 0
-                else:
-                    result = "ERROR"
-            displayString = formatResult(result)                                 
-
-            eqtdisplayTextElement.undraw()
-            eqtdisplayTextElement = Text(Point(0, 15), "")
-            eqtdisplayTextElement.draw(win)
-            
-            displayTextElement.undraw()
-            displayTextElement = Text(Point(15, 75), displayString)
-            displayTextElement.draw(win)
-        print (calcGrid[row][col])
+        #check to make sure they didn't click on an empty square
+        if newstring == '':
+            continue
+          
+        buttons[row][col].setFill('lavender')
         
-        for i in range(rows):
-            for j in range(cols):
-                if not(i == row and j == col):
-                    buttons[i][j].setFill('lightblue')
+        if row == 0 : # Memory buttons
+            memory, displayString = memorybuttonpressed(newstring, memory, displayString)
+         
+        elif row == 1 or row == 2: #advanced calculator buttons that will return a result if not a group
+            displayString  = advancedbuttons(newstring, displayString)
+
+        elif newstring == "C":
+            result = '0'
+            displayString = '0'
+            eqtdisplayString = ''
+            displaynext = False
+
+        else: # primary calculator buttons
+            if newstring.isdigit() == True: #number pressed
+                if displayString == '0':
+                    displayString = newstring
+                else:
+                    displayString = displayString + newstring
+            else: # something besides a number
+                if  newstring != "=" : #something besides =
+                    eqtdisplayString  = eqtdisplayString + newstring
+                else: #calculate
+                    displayString = calculateresult(displayString, eqtdisplayString)
+       
+        myeqtTextString = formatResult(eqtdisplayString)
+        eqtdisplayTextElement.undraw()
+        eqtdisplayTextElement = Text(Point(0, 15), myeqtTextString)
+        eqtdisplayTextElement.draw(win)
+
+        myTextString = formatResult(displayString)
+        displayTextElement.undraw()
+        displayTextElement = Text(Point(15, 75), myTextString)
+        displayTextElement.draw(win)
+                    
+        buttons[row][col].setFill('lightblue') 
+        
 
 main()
