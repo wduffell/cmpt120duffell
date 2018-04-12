@@ -52,9 +52,9 @@ def undrawDisplays():
     
 def formatResult(theresult):
     resultString = str(theresult)
-    if resultString.find('.') > -1:
-        resultString = float(resultString)
-        resultString= "%.2f" % round(resultString, 2)
+    #if resultString.find('.') > -1:
+    #    resultString = float(resultString)
+    #    resultString= "%.2f" % round(resultString, 2)
     formattedString = str(resultString).rjust(225)
     return formattedString
 
@@ -118,6 +118,8 @@ def calculateresult(displayString, eqtdisplayString):
     return displayString, eqtdisplayString
 
 def advancedbuttons(newstring, displayString):
+    print("newstring = " + newstring)
+    print("displayString = " + displayString)
 
     if newstring == "+/-":
         result = changesign(float(displayString))
@@ -148,7 +150,7 @@ def advancedbuttons(newstring, displayString):
         else:
             result = "0"
     elif newstring == "tan^-1":
-        result = arctan(float(fdisplay))
+        result = arctan(float(displayString))
     elif newstring == "10^x":
         result = tenx(float(displayString))
     elif newstring == "log":
@@ -156,7 +158,8 @@ def advancedbuttons(newstring, displayString):
     elif newstring == "ln":
         result = ln(float(displayString))
 
-    return displayString
+    result = "%.4f" % round(result, 2)
+    return result
 
     
 def main():
@@ -204,7 +207,10 @@ def main():
                     displayString = displayString + newstring
             else: # something besides a number
                 if  newstring != "=" : #something besides =
-                    eqtdisplayString  = eqtdisplayString + newstring
+                    if newstring == ".":
+                        displayString = displayString + newstring
+                    else:
+                        eqtdisplayString  = eqtdisplayString + newstring
                 else: #calculate
                     displayString = calculateresult(displayString, eqtdisplayString)
        
