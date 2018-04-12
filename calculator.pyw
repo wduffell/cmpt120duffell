@@ -1,24 +1,25 @@
 from graphics import *
 from calc_functions import *
 
-win = GraphWin('Calc', 560, 580)
+win = GraphWin('Calc', 480, 660)
 
 # Create the text for the display area
 
 eqtdisplayTextElement = Text(Point(0, 15), "")
 displayTextElement = Text(Point(15, 75), "")
-cols = 7
-rows = 6
+cols = 6
+rows = 7
 
 calcGrid = [
-    ['MC', 'M+', 'M-', 'MR', 'MS','sin','cos'],
-    ['C','%', '\u221A', 'x\u00b2','1/x','tan','sin^-1'], 
-    [7, 8, 9, '+','+/-','cos^-1','tan^-1'],
-    [4, 5, 6, '-','log','ln',''],
-    [1, 2, 3, '*','10^x','x^y',''],
-    ['.', 0,'=','/','(',')','']
+    ['MC', 'M+', 'M-', 'MR', 'MS', ''],
+    ['sin', 'sin^-1', 'cos', 'cos^-1', 'tan', 'tan^-1'],
+    ['\u221A', 'x\u00b2', 'x^y', '1/x','10^x','ln'], 
+    ['C',7, 8, 9, '+','+/-'],
+    ['CE',4, 5, 6, '-','%'],
+    ['',1, 2, 3, '*',')'],
+    ['','.', 0,'=','/','(']
 ]
-buttons = [['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','','']]
+buttons = [['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','','']]
 
 def calcButton(x, y, value):
     button = Rectangle(Point(x,y),Point(x + 80,y + 80))
@@ -69,6 +70,13 @@ def evalgroup(groupString):
         mygrouplist = groupString.split("/")
         groupresult = divide2numbers (float(mygrouplist[0]), float(mygrouplist[1]))
     return groupresult
+
+def is_number(num):
+    try:
+        float(num)
+        return True
+    except ValueError:
+        return False
     
 def main():
     memory = 0
@@ -90,6 +98,12 @@ def main():
         row, col = clickedButton(clicked)
         buttons[row][col].setFill('lavender')
         newstring = str(calcGrid[row][col])
+        try:
+            if int(newstring) >= 0 and int(newstring) <= 9:
+                print("Between 0 and 9")
+        except:
+            print("Not between 0 and 9")
+            
         if  newstring != "=" :
             if newstring == "+/-":
                 if displayString != '':
