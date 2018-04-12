@@ -99,19 +99,21 @@ def memorybuttonpressed(newstring, memory, displayString):
 
 def calculateresult(displayString, eqtdisplayString):
 
-    if displayString.find('+') > -1:
-        mylist = displayString.split("+")
+    evalString = eqtdisplayString + displayString
+
+    if evalString.find('+') > -1:
+        mylist = evalString.split("+")
         result = add2numbers(float(mylist[0]), float(mylist[1]))
-    elif displayString.find('-') > 0:
-        mylist = displayString.split("-")
+    elif evalString.find('-') > 0:
+        mylist = evalString.split("-")
         result = subtract2numbers (float(mylist[0]), float(mylist[1]))
-    elif displayString.find('*') > -1:
-        mylist = displayString.split("*")
+    elif evalString.find('*') > -1:
+        mylist = evalString.split("*")
         result = multiply2numbers (float(mylist[0]), float(mylist[1]))
-    elif displayString.find('/') > -1:
-        mylist = displayString.split("/")
+    elif evalString.find('/') > -1:
+        mylist = evalString.split("/")
         result = divide2numbers (float(mylist[0]), float(mylist[1]))
-    elif displayString.find('x^y') > -1:
+    elif evalString.find('x^y') > -1:
         result = xyfunc(xyval, float(displayString))
 
     displayString = formatResult(result)
@@ -210,9 +212,12 @@ def main():
                     if newstring == ".":
                         displayString = displayString + newstring
                     else:
+                        if eqtdisplayString == '':
+                            eqtdisplayString = displayString
                         eqtdisplayString  = eqtdisplayString + newstring
+                        displayString = '0'
                 else: #calculate
-                    displayString = calculateresult(displayString, eqtdisplayString)
+                    displayString, eqtdisplayString = calculateresult(displayString, eqtdisplayString)
        
         myeqtTextString = formatResult(eqtdisplayString)
         eqtdisplayTextElement.undraw()
