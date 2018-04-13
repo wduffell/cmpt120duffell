@@ -163,12 +163,24 @@ def advancedbuttons(newstring, displayString):
     result = "%.4f" % round(float(result), 2)
     return result
 
+def calculategroup(grp, disp, eqtdisp):
+    i = eqtdisp.rfind('(')
+    print(mystring)
+    newstring = eqtdisp[i+1:]
+    print(newstring)
+    newstring = newstring.rstrip(')')
+    disp = calculateresult(newstring, eqtdisp)
+    return disp, eqtdisp
+
     
 def main():
     memory = 0
     createCalculatorButtons()
     displayString = '0'
     eqtdisplayString = ''
+    group = 0
+
+    cleardisplay = False
 
     myeqtTextString = str(eqtdisplayString).rjust(200)
     eqtdisplayTextElement = Text(Point(0, 15), myeqtTextString)
@@ -198,6 +210,7 @@ def main():
             result = '0'
             displayString = '0'
             eqtdisplayString = ''
+            group = 0
 
         elif newstring == "CE":
             displayString = '0'
@@ -207,19 +220,44 @@ def main():
             if newstring.isdigit() == True: #number pressed
                 if displayString == '0':
                     displayString = newstring
+                elif cleardisplay == True:
+                    displayString = newstring
+                    cleardisplay = False
                 else:
                     displayString = displayString + newstring
-            else: # something besides a number
+            elif newstring == '(':
+                group = group + 1
+                if displayString == '0':
+                    displayString = ''
+                eqtdisplayString = eqtdisplayString + newstring
+            elif newstring == ')':
+                #check to make sure there was a '(' first
+                if group <= 0:
+                    continue
+                eqtdisplayString = eqtdisplayString + newstring
+                #calculate
+                displayString = calculategroup(group, displayString, eqtdisplayString)
+                #print("EqtDisplatString:" + eqtdisplayString)
+                #print("DisplayString: " + displayString)
+                
+            else: # something besides a number or group
                 if  newstring != "=" : #something besides =
+                    print("EqtDisplayString: " + eqtdisplayString)
+                    print("DisplayString: " + displayString)
+
+                    
                     if newstring == ".":
                         displayString = displayString + newstring
                     else:
+                        cleardisplay = True
                         if eqtdisplayString == '':
                             eqtdisplayString = displayString
                         eqtdisplayString  = eqtdisplayString + newstring
-                        displayString = '0'
+                        
                 else: #calculate
+                    cleardisplay = True
                     displayString, eqtdisplayString = calculateresult(displayString, eqtdisplayString)
+                    eqtdisplayString = ""
        
         myeqtTextString = formatResult(eqtdisplayString)
         eqtdisplayTextElement.undraw()
