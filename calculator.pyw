@@ -55,7 +55,7 @@ def formatResult(theresult):
     #if resultString.find('.') > -1:
     #    resultString = float(resultString)
     #    resultString= "%.2f" % round(resultString, 2)
-    formattedString = str(resultString).rjust(225)
+    formattedString = str(resultString).rjust(200)
     return formattedString
 
 
@@ -160,7 +160,7 @@ def advancedbuttons(newstring, displayString):
     elif newstring == "ln":
         result = ln(float(displayString))
 
-    result = "%.4f" % round(result, 2)
+    result = "%.4f" % round(float(result), 2)
     return result
 
     
@@ -170,11 +170,11 @@ def main():
     displayString = '0'
     eqtdisplayString = ''
 
-    myeqtTextString = str(eqtdisplayString).rjust(225)
+    myeqtTextString = str(eqtdisplayString).rjust(200)
     eqtdisplayTextElement = Text(Point(0, 15), myeqtTextString)
     eqtdisplayTextElement.draw(win)
 
-    myTextString = str(displayString).rjust(225)
+    myTextString = str(displayString).rjust(200)
     displayTextElement = Text(Point(15, 75), myTextString)
     displayTextElement.draw(win)
 
@@ -182,13 +182,12 @@ def main():
         clicked = win.getMouse()
         print (clicked.getX(), clicked.getY())
         row, col = clickedButton(clicked)
+        buttons[row][col].setFill('lavender')
         newstring = str(calcGrid[row][col])
         #check to make sure they didn't click on an empty square
         if newstring == '':
             continue
-          
-        buttons[row][col].setFill('lavender')
-        
+    
         if row == 0 : # Memory buttons
             memory, displayString = memorybuttonpressed(newstring, memory, displayString)
          
@@ -199,7 +198,10 @@ def main():
             result = '0'
             displayString = '0'
             eqtdisplayString = ''
-            displaynext = False
+
+        elif newstring == "CE":
+            displayString = '0'
+            result = '0'
 
         else: # primary calculator buttons
             if newstring.isdigit() == True: #number pressed
@@ -228,8 +230,11 @@ def main():
         displayTextElement.undraw()
         displayTextElement = Text(Point(15, 75), myTextString)
         displayTextElement.draw(win)
-                    
-        buttons[row][col].setFill('lightblue') 
+
+        for i in range(rows):
+            for j in range(cols):
+                if not(i == row and j == col):
+                    buttons[i][j].setFill('lightblue') 
         
 
 main()
