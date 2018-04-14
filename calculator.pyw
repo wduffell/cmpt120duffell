@@ -52,28 +52,8 @@ def undrawDisplays():
     
 def formatResult(theresult):
     resultString = str(theresult)
-    #if resultString.find('.') > -1:
-    #    resultString = float(resultString)
-    #    resultString= "%.2f" % round(resultString, 2)
     formattedString = str(resultString).rjust(200)
     return formattedString
-
-
-def evalgroup(groupString):
-    if groupString.find('+') > -1:
-        mygrouplist = groupString.split("+")
-        groupresult = add2numbers(float(mygrouplist[0]), float(mygrouplist[1]))
-    elif groupString.find('-') > 0:
-        mygrouplist = groupString.split("-")
-        groupresult = subtract2numbers (float(mygrouplist[0]), float(mygrouplist[1]))
-    elif groupString.find('*') > -1:
-        mygrouplist = groupString.split("*")
-        groupresult = multiply2numbers (float(mygrouplist[0]), float(mygrouplist[1]))
-    elif groupString.find('/') > -1:
-        mygrouplist = groupString.split("/")
-        groupresult = divide2numbers (float(mygrouplist[0]), float(mygrouplist[1]))
-    return groupresult
-
 
 
 def memorybuttonpressed(newstring, memory, displayString):
@@ -97,9 +77,10 @@ def memorybuttonpressed(newstring, memory, displayString):
        
     return memory, result
 
-def calculateresult(displayString, eqtdisplayString):
 
-    evalString = eqtdisplayString + displayString
+def calculateresult(evalString):
+
+    result = 0
 
     if evalString.find('+') > -1:
         mylist = evalString.split("+")
@@ -113,15 +94,10 @@ def calculateresult(displayString, eqtdisplayString):
     elif evalString.find('/') > -1:
         mylist = evalString.split("/")
         result = divide2numbers (float(mylist[0]), float(mylist[1]))
-    elif evalString.find('x^y') > -1:
-        result = xyfunc(xyval, float(displayString))
 
-    displayString = formatResult(result)
-    return displayString, eqtdisplayString
+    return str(result)
 
 def advancedbuttons(newstring, displayString):
-    print("newstring = " + newstring)
-    print("displayString = " + displayString)
 
     if newstring == "+/-":
         result = changesign(float(displayString))
@@ -163,13 +139,22 @@ def advancedbuttons(newstring, displayString):
     result = "%.4f" % round(float(result), 2)
     return result
 
-def calculategroup(grp, disp, eqtdisp):
-    i = eqtdisp.rfind('(')
-    print(mystring)
-    newstring = eqtdisp[i+1:]
-    print(newstring)
-    newstring = newstring.rstrip(')')
-    disp = calculateresult(newstring, eqtdisp)
+def calculategroup(grp, dispstring, eqtdisp):
+    if grp <= 1:
+        i = eqtdisp.rfind('(')
+        j = eqtdisp.find(')')
+        newstring = eqtdisp[i+1:j]
+        disp = calculateresult(newstring)
+        if j != len(eqtdisp)-1:
+            #more to the equation
+            nexteqt = eqtdisp[j+1:] + dispstring
+            newatring = str(disp) + nexteqt
+            disp = calculateresult(newstring)
+    else:
+        i = eqtdisp.rfind('(')
+        j = eqtdisp.find(')')
+        newstring = eqtdisp[i+1:j]
+        disp = calculateresult(newstring)
     return disp, eqtdisp
 
     
@@ -204,7 +189,14 @@ def main():
             memory, displayString = memorybuttonpressed(newstring, memory, displayString)
          
         elif row == 1 or row == 2: #advanced calculator buttons that will return a result if not a group
-            displayString  = advancedbuttons(newstring, displayString)
+            if group == 0:
+                displayString  = advancedbuttons(newstring, displayString)
+            else:
+                if group == 2:
+                    eqtdisplayString = '(' + newstring + eqtdisplayString[1:]
+                else:
+                    eqtdisplayString = newstring + eqtdisplayString
+                displayString  = advancedbuttons(newstring, displayString)
 
         elif newstring == "C":
             result = '0'
@@ -225,38 +217,44 @@ def main():
                     cleardisplay = False
                 else:
                     displayString = displayString + newstring
+                    
             elif newstring == '(':
                 group = group + 1
-                if displayString == '0':
-                    displayString = ''
                 eqtdisplayString = eqtdisplayString + newstring
+                
             elif newstring == ')':
                 #check to make sure there was a '(' first
-                if group <= 0:
+                if group == 0:
                     continue
-                eqtdisplayString = eqtdisplayString + newstring
+                eqtdisplayString = eqtdisplayString + displayString + newstring
                 #calculate
-                displayString = calculategroup(group, displayString, eqtdisplayString)
-                #print("EqtDisplatString:" + eqtdisplayString)
-                #print("DisplayString: " + displayString)
+                displayString, eqtdisplayString = calculategroup(group, displayString, eqtdisplayString)
+                cleardisplay = False
                 
             else: # something besides a number or group
                 if  newstring != "=" : #something besides =
-                    print("EqtDisplayString: " + eqtdisplayString)
-                    print("DisplayString: " + displayString)
-
-                    
                     if newstring == ".":
                         displayString = displayString + newstring
                     else:
+
                         cleardisplay = True
                         if eqtdisplayString == '':
-                            eqtdisplayString = displayString
-                        eqtdisplayString  = eqtdisplayString + newstring
+                            eqtdisplayString = displayString + newstring
+                        else:
+                            if eqtdisplayString.find(')') > -1:
+                                eqtdisplayString  = eqtdisplayString + newstring        
+                            else:    
+                                eqtdisplayString  = eqtdisplayString + displayString + newstring
                         
                 else: #calculate
+                    
+                    displayString = displayString.lstrip()
+                    eqtdisplayString = eqtdisplayString.lstrip()
                     cleardisplay = True
-                    displayString, eqtdisplayString = calculateresult(displayString, eqtdisplayString)
+                    if eqtdisplayString.find(')') > -1:
+                        displayString, eqtdisplayString = calculategroup(group, displayString, eqtdisplayString)
+                    else:
+                        displayString = calculateresult(eqtdisplayString + displayString)
                     eqtdisplayString = ""
        
         myeqtTextString = formatResult(eqtdisplayString)
