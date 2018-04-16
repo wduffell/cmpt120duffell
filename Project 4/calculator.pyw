@@ -164,6 +164,8 @@ def main():
     displayString = '0'
     eqtdisplayString = ''
     group = 0
+    xy = False
+    xyval = 0
 
     cleardisplay = False
 
@@ -203,10 +205,14 @@ def main():
             displayString = '0'
             eqtdisplayString = ''
             group = 0
+            xy = False
+            xyval = 0
 
         elif newstring == "CE":
             displayString = '0'
             result = '0'
+            xy = False
+            xyval = 0
 
         else: # primary calculator buttons
             if newstring.isdigit() == True: #number pressed
@@ -230,6 +236,11 @@ def main():
                 #calculate
                 displayString, eqtdisplayString = calculategroup(group, displayString, eqtdisplayString)
                 cleardisplay = False
+
+            elif newstring == "x^y":
+                xy = True
+                xyval = float(displayString)
+                displayString = '0'
                 
             else: # something besides a number or group
                 if  newstring != "=" : #something besides =
@@ -247,15 +258,23 @@ def main():
                                 eqtdisplayString  = eqtdisplayString + displayString + newstring
                         
                 else: #calculate
-                    
-                    displayString = displayString.lstrip()
-                    eqtdisplayString = eqtdisplayString.lstrip()
-                    cleardisplay = True
-                    if eqtdisplayString.find(')') > -1:
-                        displayString, eqtdisplayString = calculategroup(group, displayString, eqtdisplayString)
+                    if xy == True:
+                        result = xyfunc(xyval, float(displayString))
+                        displayString = str(result)
+                        xy = False
+                        xyval = 0
+                        eqtdisplayString = ""
+                        cleardisplay = True
+
                     else:
-                        displayString = calculateresult(eqtdisplayString + displayString)
-                    eqtdisplayString = ""
+                        displayString = displayString.lstrip()
+                        eqtdisplayString = eqtdisplayString.lstrip()
+                        cleardisplay = True
+                        if eqtdisplayString.find(')') > -1:
+                            displayString, eqtdisplayString = calculategroup(group, displayString, eqtdisplayString)
+                        else:
+                            displayString = calculateresult(eqtdisplayString + displayString)
+                        eqtdisplayString = ""
        
         myeqtTextString = formatResult(eqtdisplayString)
         eqtdisplayTextElement.undraw()
