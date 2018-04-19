@@ -14,7 +14,7 @@ productPrices = [ 2.50, 14.99, 44.95, 34.95, 149.99, 8.99 ]
 productQuantities = [ 4, 10, 5, 7, 2, 8 ]
 
 class Product:
-    def __init___ (self, name, price, quantity): #constructor #self access attributes
+    def __init__(self, name, price, quantity): #constructor #self access attributes
         self.name = name
         self.price = price
         self.quantity = quantity #assign values
@@ -53,10 +53,7 @@ def main():
         prodId = int(vals[0])
         count = int(vals[1])
 
-        myProduct= Product()
-        myProduct.name = productNames[prodId]
-        myProduct.price = productPrices[prodId]
-        myProduct.quantity = productQuantities[prodId]       
+        myProduct= Product(productNames[prodId], productPrices[prodId], productQuantities[prodId])
 
         instock = myProduct.isinstock(count)  
         if instock == True:
