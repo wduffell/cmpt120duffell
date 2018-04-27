@@ -50,8 +50,9 @@ class TennisMatch:
 
     def isOver(self):
         if self.playerA.getSets() == 3 or self.playerB.getSets() == 3:
-        
-
+            return True
+            
+    
     def changeServer(self):
         if self.server == self.playerA:
             self.server = self.playerB
@@ -59,4 +60,10 @@ class TennisMatch:
         else:
             self.server = self.playerA
             self.acceptor = self.playerB
+
+
+
+
+
+            
 
