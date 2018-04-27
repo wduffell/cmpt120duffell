@@ -3,7 +3,6 @@ from calc_functions import *
 
 win = GraphWin('Calc', 480, 660)
 
-
 cols = 6
 rows = 7
 
@@ -16,7 +15,7 @@ calcGrid = [
     ['',1, 2, 3, '*',')'],
     ['','.', 0,'=','/','(']
 ]
-buttons = [['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','','']]
+
 
 class Button:
 
@@ -28,8 +27,8 @@ class Button:
         x,y = center.getX(),center.getY()
         self.xmax, self.xmin = x+w, x-w
         self.ymax, self.ymin = y+h, y-h
-        p1 = Point(sel.xmin, self.ymin)
-        p2 = Point(sel.xmax, self.ymax)
+        p1 = Point(self.xmin, self.ymin)
+        p2 = Point(self.xmax, self.ymax)
         self.rect = Rectangle(p1, p2)
         self.rect.setFill('lavender')
         self.rect.draw(win)
@@ -77,6 +76,12 @@ class Calculator:
         group = 0
         xy = False
         xyval=0
+
+    
+    def createCalculatorButtons():
+        for i in range(rows):
+            for j in range(cols):
+                buttons[i][j] = calcButton(j * 80, i * 80 + 100, calcGrid[i][j])
 
     def formatResult(theresult):
         resultString = str(theresult)
@@ -135,24 +140,30 @@ def calcButton(x, y, value):
     text.draw(win)
     return button
 
-def inside(clicked, button):
+'''def inside(clicked, button):
     if clicked.getX() > button.p1.getX()and clicked.getX() < button.p2.getX():
             if clicked.getY() > button.p1.getY()and clicked.getY() < button.p2.getY():
                 return True
-    return False
+    return False'''
 
 def clickedButton(clicked):
     for i in range(rows):
         for j in range(cols):
-            if clicked.getX() > buttons[i][j].p1.getX()and clicked.getX() < buttons[i][j].p2.getX():
-                if clicked.getY() > buttons[i][j].p1.getY()and clicked.getY() < buttons[i][j].p2.getY():
-                    return i, j
+            if buttons[i][j].clicked(clicked) == True:
+                return i, j
     return -1, -1
 
+
+
+buttons = [[Button(win, Point(0, 0), 0,0, '0') for j in range(cols)] for i in range(rows)]
+
 def createCalculatorButtons():
+
     for i in range(rows):
         for j in range(cols):
-            buttons[i][j] = calcButton(j * 80, i * 80 + 100, calcGrid[i][j])
+            buttons[i][j] = Button(win, Point(j*80+40, i*80+140), 80,80, calcGrid[i][j])
+            buttons[i][j].activate()
+            
 
 def memorybuttonpressed(newstring, memory, displayString):
 
@@ -231,7 +242,7 @@ def calculategroup(grp, dispstring, eqtdisp):
     return disp, eqtdisp
 
 def main():
-
+    
     createCalculatorButtons()
     
     displayString = '0'
@@ -255,9 +266,12 @@ def main():
         clicked = win.getMouse()
         print (clicked.getX(), clicked.getY())
         row, col = clickedButton(clicked)
-        buttons[row][col].setFill('lavender')
+
+        buttons[row][col].deactivate()
+        
         newstring = str(calcGrid[row][col])
         #check to make sure they didn't click on an empty square
+
         if newstring == '':
             continue
         if newstring == 'Quit':
@@ -369,7 +383,7 @@ def main():
         for i in range(rows):
             for j in range(cols):
                 if not(i == row and j == col):
-                    buttons[i][j].setFill('lightblue')
+                    buttons[i][j].activate()
         
 
 main()
