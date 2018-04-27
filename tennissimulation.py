@@ -20,9 +20,9 @@ def main():
     probA, probB, n = getInputs()
     stats = SimStats()
     for i in range(n):
-        game = TennisMatch(probA, probB)
-        game.play()
-        stats.update(game)
+        theGame = TennisMatch(probA, probB)
+        theGame.play()
+        stats.update(theGame)
     stats.printReport()
    
 
