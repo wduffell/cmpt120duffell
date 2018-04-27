@@ -7,25 +7,56 @@ class TennisMatch:
         self.playerA = Player(probA)
         self.playerB = Player(probB)
         self.server = self.playerA
+        self.acceptor = self.playerB
 
     def play(self):
-        while not self.isOver():
-            if self.server.winsServe():
-                self.server.incScore()
-            else:
-                self.changeServer()
+        if self.server.scorePoint():
+            if self.server.grabScore()== 40 and self.acceptor.grabScore() == 40:
+                if self.server.hasAdvantage():
+                    self.server.gameVictory()
+                    if self.server.games >= 6 and self.server.games - self.acceptor.games >= 2:
+                        self.server.setVictory()
+                        self.acceptor.resetScore()
+                        self.server.changeServer()
+                elif self.acceptor.hasAdvantage():
+                    self.acceptor.noAdvantage():
+                else:
+                    self.server.advantage()
+                    
 
-    def getScores(self):
-        return self.playerA.getScore(), self.playerB.getScore()
+            elif self.server.grabScore() == 40 and self.acceptor.grabScore() < 40:
+                self.server.gameVictory()
+                if self.server.games >= 6 and self.server.games - self.acceptor.games >= 2:
+                    self.server.setVictory()
+                self.acceptor.resetScore()
+                self.server.resetScore()
+                self.server.changeServer()
+            else:
+                self.server.incScore()
+
+        else:
+            self.acceptor.incScore()
+            if self.acceptor.grabScore() == 40 and self.server.grabScore() < 40:
+                self.acceptor.gameVictory()
+                if self.acceptor.games >= 6 and self.acceptor.games - self.server.games >= 2:
+                    self.acceptor.setVictory()
+                self.server.resetScore()
+                self.acceptor.resetScore()
+                self.server.changeServer()
+            
+
+    def grabScores(self):
+        return self.playerA.grabScore(), self.playerB.grabScore()
 
     def isOver(self):
-        return self.playerA.getScore() == 15 or self.playerB.getScore() == 15 \
-            or (self.playerA.getScore() == 7 and self.playerB.getScore() == 0) \
-            or (self.playerB.getScore() == 7 and self.playerA.getScore() == 0)
+        if self.playerA.getSets() == 3 or self.playerB.getSets() == 3:
+        
 
     def changeServer(self):
         if self.server == self.playerA:
             self.server = self.playerB
+            self.acceptor = self.playerA
         else:
             self.server = self.playerA
+            self.acceptor = self.playerB
 
