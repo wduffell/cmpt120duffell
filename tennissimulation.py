@@ -3,23 +3,27 @@
 from simstats import SimStats
 from tennismatch import TennisMatch
 
+
+def printIntro():
+    print("This program simulates a game of tennis between two")
+    print('players called "A" and "B". The abilities of each player is')
+    print("indicated by a probability (a number between 0 and 1)")
+
+def getInputs():
+    probA = float(input("What is the prob. player A wins a serve? "))
+    probB = float(input("What is the prob. player B wins a serve? "))
+    n = int(input("How many games to simulate? "))
+    return probA, probB, n
+
 def main():
     printIntro()
     probA, probB, n = getInputs()
-    winsA, winsB = simNGames(n, probA, probB)
-    printSummary(winsA, winsB)
-
-def printIntro():
-    print("This program simulates a game of racquetball between two")
-    print('players called "A" and "B". The abilities of each player is')
-    print("indicated by a probability (a number between 0 and 1) that")
-    print("the player wins the popint when serving. Player A always")
-    print("has the first serve.\n")
-
-def getInputs():
-    a = float(input("What is the prob. player A wins a serve? "))
-    b = float(input("What is the prob. player B wins a serve? "))
-    n = int(input("How many games to simulate? "))
-    return a, b, n
+    stats = SimStats()
+    for i in range(n):
+        game = TennisMatch(probA, probB)
+        game.play()
+        stats.update(game)
+    stats.printReport()
+   
 
 main()
