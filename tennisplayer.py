@@ -3,7 +3,7 @@
 from random import *
 
 class Player:
-    def __init__(self):
+    def __init__(self,prob):
         self.prob = prob
         self.score = 0
         self.sets = 0
