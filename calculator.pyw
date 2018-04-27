@@ -4,7 +4,6 @@ from calc_functions import *
 win = GraphWin('Calc', 480, 660)
 
 
-
 cols = 6
 rows = 7
 
@@ -32,7 +31,7 @@ class Button:
         p1 = Point(sel.xmin, self.ymin)
         p2 = Point(sel.xmax, self.ymax)
         self.rect = Rectangle(p1, p2)
-        self.rect.setFill('lightgray')
+        self.rect.setFill('lavender')
         self.rect.draw(win)
         self.label = Text(center, label)
         self.label.draw(win)
@@ -232,15 +231,16 @@ def calculategroup(grp, dispstring, eqtdisp):
     return disp, eqtdisp
 
 def main():
-    memory = 0
+
     createCalculatorButtons()
+    
     displayString = '0'
     eqtdisplayString = ''
 
+    memory = 0
     group = 0
     xy = False
     xyval=0
-
     cleardisplay = False
 
     myeqtTextString = str(eqtdisplayString).rjust(200)
