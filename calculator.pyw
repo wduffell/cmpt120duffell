@@ -57,19 +57,30 @@ class Button:
     def getLabel(self):
         return self.label;
 
-class Display:
+class Displays:
+
+       
     def __init__(self):
-        myeqtTextString = str(eqtdisplayString).rjust(200)
-        eqtdisplayTextElement = Text(Point(0, 15), myeqtTextString)
-        eqtdisplayTextElement.draw(win)
+        self.myeqtTextString = ''
+        self.myTextString = '0'
 
-        myTextString = str(displayString).rjust(200)
-        displayTextElement = Text(Point(15, 75), myTextString)
-        displayTextElement.draw(win)
+        self.myeqtTextString = str(self.myeqtTextString).rjust(200)
+        self.eqtdisplayTextElement = Text(Point(0, 15), self.myeqtTextString)
+        self.eqtdisplayTextElement.draw(win)
 
-    def undrawDisplays():
-        eqtdisplayTextElement.draw(win)
-        displayTextElement.draw(win)
+        self.myTextString = str(self.myTextString).rjust(200)
+        self.displayTextElement = Text(Point(15, 75), self.myTextString)
+        self.displayTextElement.draw(win)
+
+    def redrawDisplays(self):
+              
+        self.eqtdisplayTextElement.undraw()
+        self.eqtdisplayTextElement = Text(Point(0, 15), self.myeqtTextString)
+        self.eqtdisplayTextElement.draw(win)
+
+        self.displayTextElement.undraw()
+        self.displayTextElement = Text(Point(15, 75), self.myTextString)
+        self.displayTextElement.draw(win)
 
 class Calculator:
     def __init__(self):
@@ -132,28 +143,12 @@ def calculateresult(evalString):
         result = divide2numbers (float(mylist[0]), float(mylist[1]))
     return str(result)
 
-def calcButton(x, y, value):
-    button = Rectangle(Point(x,y),Point(x + 80,y + 80))
-    button.setFill('lightblue')
-    button.draw(win)
-    text = Text(Point(x + 40, y + 40), value)
-    text.draw(win)
-    return button
-
-'''def inside(clicked, button):
-    if clicked.getX() > button.p1.getX()and clicked.getX() < button.p2.getX():
-            if clicked.getY() > button.p1.getY()and clicked.getY() < button.p2.getY():
-                return True
-    return False'''
-
 def clickedButton(clicked):
     for i in range(rows):
         for j in range(cols):
             if buttons[i][j].clicked(clicked) == True:
                 return i, j
     return -1, -1
-
-
 
 buttons = [[Button(win, Point(0, 0), 0,0, '0') for j in range(cols)] for i in range(rows)]
 
@@ -245,23 +240,16 @@ def main():
     
     createCalculatorButtons()
     
-    displayString = '0'
-    eqtdisplayString = ''
-
     memory = 0
     group = 0
     xy = False
     xyval=0
     cleardisplay = False
+    displayString = '0'
+    eqtdisplayString = ''
 
-    myeqtTextString = str(eqtdisplayString).rjust(200)
-    eqtdisplayTextElement = Text(Point(0, 15), myeqtTextString)
-    eqtdisplayTextElement.draw(win)
+    mydisplays = Displays()
 
-    myTextString = str(displayString).rjust(200)
-    displayTextElement = Text(Point(15, 75), myTextString)
-    displayTextElement.draw(win)
-    
     while 1 == 1:
         clicked = win.getMouse()
         print (clicked.getX(), clicked.getY())
@@ -370,16 +358,12 @@ def main():
                             displayString = calculateresult(eqtdisplayString + displayString)
                         eqtdisplayString = ""
        
-        myeqtTextString = formatResult(eqtdisplayString)
-        eqtdisplayTextElement.undraw()
-        eqtdisplayTextElement = Text(Point(0, 15), myeqtTextString)
-        eqtdisplayTextElement.draw(win)
+        mydisplays.myeqtTextString = formatResult(eqtdisplayString)       
+        mydisplays.myTextString = formatResult(displayString)
 
-        myTextString = formatResult(displayString)
-        displayTextElement.undraw()
-        displayTextElement = Text(Point(15, 75), myTextString)
-        displayTextElement.draw(win)
-                    
+        mydisplays.redrawDisplays()
+
+                            
         for i in range(rows):
             for j in range(cols):
                 if not(i == row and j == col):
