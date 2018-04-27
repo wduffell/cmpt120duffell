@@ -3,7 +3,7 @@
 from random import *
 
 class Player:
-    def __init__(self, prob):
+    def __init__(self):
         self.prob = prob
         self.score = 0
         self.sets = 0
@@ -33,6 +33,9 @@ class Player:
         self.games = self.games + 1
 
     def setVictory(self):
+        self.sets = self.sets + 1
+
+    def hasAdvantage(self):
         self.advantage = True
 
     def noAdvantage(self):
