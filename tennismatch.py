@@ -1,6 +1,6 @@
 #tennismatch.py
 
-from player import Player
+from tennisplayer import Player
 
 class TennisMatch:
     def __init__(self, probA, probB):
