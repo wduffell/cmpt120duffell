@@ -19,7 +19,7 @@ class TennisMatch:
                         self.acceptor.resetScore()
                         self.server.changeServer()
                 elif self.acceptor.hasAdvantage():
-                    self.acceptor.noAdvantage():
+                    self.acceptor.noAdvantage()
                 else:
                     self.server.advantage()
                     
