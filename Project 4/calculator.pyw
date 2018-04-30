@@ -3,7 +3,7 @@ from calc_functions import *
 
 win = GraphWin('Calc', 480, 660)
 
-
+# JA: Some of the sequences from the examples are not working properly
 
 cols = 6
 rows = 7
